@@ -2,11 +2,19 @@
 const inquirer = require('inquirer');
 const fs = require('fs');
 
-const generateHTML = require('./src/generateHTML.js')
+// classes
+const Manager = require('./lib/Manager');
 
-//create question prompts for user input
-const userInput = () => {
-    return inquirer.prompt([
+// employees data
+const employeesData = [];
+
+const generateHTML = require('./src/html-template.js')
+
+// pseudocode
+
+// Ask the user about the team manager's info (name, id, email and officenumber) 
+const addManager = () => {
+    inquirer.prompt([
         {
             type: 'input',
             name: 'manager',
@@ -45,7 +53,66 @@ const userInput = () => {
             default: true
         },
     ])
+    .then((answers) => {
+        // create a new manager
+        const newManager = new Manager(answers.manager, answers.employeeId, answers.email, answers.officeNum)
+
+        console.log(newManager);
+
+        // add this new manager to our employees data
+        employeesData.push(newManager);
+
+        askEmployeeType();
+    })
+
 };
+
+
+// Ask whether they would like to Add an Engineer or an Intern
+const askEmployeeType = () => {
+    inquirer.prompt([{
+        type: "list",
+        name:  "employeeType",
+        message: "Which employee type would you like to add?",
+        choices: [
+            "Engineer",
+            "Intern",
+            "None"
+        ]
+    }])
+    .then((answers) => {
+        if(answers.employeeType == "Engineer") {
+            // call the function to add an Engineer
+
+        } else if(answers.employeeType == "Intern") {
+            // call the function to add an Intern
+            
+        } else {
+            // call generateHTML
+        }
+    })
+}
+
+
+// If they choose Engineer, ask about Engineer Info -> add this new Engineer to our employees data
+const addEngineer = () => {
+}
+
+
+// If they choose Intern, ask about Intern Info -> add this new Intern to our employees data
+const addIntern = () => {
+
+}
+
+// Ask again whether Engineer, Intern or None
+// If None, then generate the HTML page and use the employees data that we got from the prompts
+const generateHTML = () => {
+
+}
+
+
+
+
 
 const teamMembers = teamMemberData => {
     console.log(`
