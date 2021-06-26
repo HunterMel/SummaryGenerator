@@ -4,11 +4,15 @@ const fs = require('fs');
 
 // classes
 const Manager = require('./lib/Manager');
+const Intern = require('./lib/Intern');
+const Engineer = require('./lib/Engineer');
+const Employee = require('./lib/Employee')
+
 
 // employees data
 const employeesData = [];
 
-const generateHTML = require('./src/html-template.js')
+const generateHTML = require('./src/generateHTML2.js')
 
 // pseudocode
 
@@ -68,6 +72,7 @@ const addManager = () => {
 };
 
 
+
 // Ask whether they would like to Add an Engineer or an Intern
 const askEmployeeType = () => {
     inquirer.prompt([{
@@ -95,20 +100,20 @@ const askEmployeeType = () => {
 
 
 // If they choose Engineer, ask about Engineer Info -> add this new Engineer to our employees data
-const addEngineer = () => {
-}
+//const addEngineer = () => {
+//}
 
 
 // If they choose Intern, ask about Intern Info -> add this new Intern to our employees data
-const addIntern = () => {
+//const addIntern = () => {
 
-}
+//}
 
 // Ask again whether Engineer, Intern or None
 // If None, then generate the HTML page and use the employees data that we got from the prompts
-const generateHTML = () => {
+//const generateHTML = () => {
 
-}
+//}
 
 
 
@@ -179,3 +184,5 @@ Add a New Team Member
         
     ]);
 };
+
+addManager()
