@@ -27,15 +27,15 @@ const managerCard = manager => {
     <div class="card text-dark bg-info mb-3" style="max-width: 18rem;">
         <img src="http://tinygraphs.com/labs/isogrids/hexa" class="card-img-top" alt="avatar">
         <div class="card-body">
-            <h5 class="card-title">${employee.name}</h5>
-            <p class="card-text">${employee.role}</p>
+            <h5 class="card-title">${engineer.name}</h5>
+            <p class="card-text">${engineer.role}</p>
         </div>
         <ul class="list-group list-group-flush">
-            <li class="list-group-item">${employee.id}</li>
-            <li class="list-group-item">${employee.email}</li>
+            <li class="list-group-item">${engineer.id}</li>
+            <li class="list-group-item">${engineer.email}</li>
         </ul>
         <div class="card-body">
-            <p class="github"> GitHub: <a href="https://github.com/${employee.gitHubUser}" class="card-link"></a></p>
+            <p class="github"> GitHub: <a href="https://github.com/${engineer.gitHubUser}" class="card-link"></a></p>
         </div>
     </div>    
         `;
@@ -78,13 +78,13 @@ const generateHTML = employeesData => {
           
           switch(employee.getRole()) {
             case 'Manager':
-             return generateManagerCard(employee)
+             return managerCard(employee)
               break;
             case 'Engineer':
-              return generateEngineerCard(employee)
+              return engineerCard(employee)
               break;
             case 'Intern':
-              return generateInternCard(employee)
+              return internCard(employee)
               break;
           }
         }).join('')
