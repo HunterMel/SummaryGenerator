@@ -6,7 +6,7 @@ const fs = require('fs');
 const Manager = require('./lib/Manager');
 const Intern = require('./lib/Intern');
 const Engineer = require('./lib/Engineer');
-const Employee = require('./lib/Employee')
+//const Employee = require('./lib/Employee')
 
 
 // employees data
@@ -61,7 +61,7 @@ const addManager = () => {
         // create a new manager
         const newManager = new Manager(answers.manager, answers.employeeId, answers.email, answers.officeNum)
 
-        console.log(newManager);
+        //console.log(newManager);
 
         // add this new manager to our employees data
         employeesData.push(newManager);
@@ -71,118 +71,149 @@ const addManager = () => {
 
 };
 
-
-
 // Ask whether they would like to Add an Engineer or an Intern
 const askEmployeeType = () => {
-    inquirer.prompt([{
-        type: "list",
-        name:  "employeeType",
-        message: "Which employee type would you like to add?",
-        choices: [
-            "Engineer",
-            "Intern",
-            "None"
-        ]
-    }])
-    .then((answers) => {
-        if(answers.employeeType == "Engineer") {
-            // call the function to add an Engineer
-
-        } else if(answers.employeeType == "Intern") {
-            // call the function to add an Intern
-            
-        } else {
-            // call generateHTML
-        }
-    })
-}
-
-
-// If they choose Engineer, ask about Engineer Info -> add this new Engineer to our employees data
-//const addEngineer = () => {
-//}
-
-
-// If they choose Intern, ask about Intern Info -> add this new Intern to our employees data
-//const addIntern = () => {
-
-//}
-
-// Ask again whether Engineer, Intern or None
-// If None, then generate the HTML page and use the employees data that we got from the prompts
-//const generateHTML = () => {
-
-//}
-
-
-
-
-
-const teamMembers = teamMemberData => {
     console.log(`
 ======================
 Add a New Team Member
 ======================
 `);
 //if there is np other team members
-    if (!teamMemberData.employee) {
-        teamMemberData.employee = [];
-    }
+
     return inquirer.prompt([
         {    
             type: 'list',
             name: 'role',
             message: 'Please enter your role.(Required)',
-            choices: ['Engineer', 'Intern'],
-            validate: roleInput => {
-            if (roleInput) {
-                return true;
-            } else {
-                console.log('Please enter your role.');
-                return false;
-            }
-        }
+            choices: ['Engineer', 'Intern', 'Manager', 'None'],
+            //validate: roleInput => {
+            //if (roleInput) {
+                //return true;
         },
         
+    ]).then((answer)=>{
+        //console.log(answer.role)
+
+         if(answer.role == "Engineer") {
+            // call engineerQuestions
+            engineerQuestions()
+        } else if (answer.role == "Intern") {
+            //call internQuestions
+            internQuestions()
+            ;
+        } else {
+            console.log(employeesData)
+            //call generateHTML
+            const generateTeam = generateHTML(employeesData);
+            //console.log(generateTeam)
+            fs.writeFile('./dist/index.html', generateTeam, err => {
+                if (err) throw err;
+
+                console.log('HTML Generated!');
+            })
+        }
+    })
+};
+//questions for engineer
+const engineerQuestions = () => {
+    inquirer.prompt([
         {
             type: 'input',
-            name: 'usage',
-            message: 'Enter usage information.',
-            default: true
-        },
-        {
-            type: 'input',
-            name: 'contribution',
-            message: 'Enter contribution guidelines.',
-            default: true
-        },
-        {   type: 'input',
-            name: 'tests',
-            message: 'Enter testing information.',
-            default: true
-        },
-        {
-            type: 'checkbox',
-            name: 'license',
-            message: 'Please choose a license for your read me. Check all that apply.',
-            choices: ['General Public License', 'Apache 2.0', 'MIT license', 'ISC license']
-        },
-        {
-            type: 'input',
-            name: 'github',
-            message: 'Enter your GitHub Username (Required)',
-            validate: githubInput => {
-                if (githubInput){
+            name: 'engineerName',
+            message: 'What is your name? (Required)',
+            validate: engineerInput => {
+                if (engineerInput) {
                     return true;
                 } else {
-                    console.log('Please enter your GitHub username.');
+                    console.log('Please enter your name.');
                     return false;
                 }
             }
         },
-        
-    ]);
-};
+        {
+            type: 'input',
+            name: 'employeeID',
+            message: 'Please enter your employee ID number. (Required)',
+            validate: employeeIDInput => {
+                if (employeeIDInput) {
+                    return true;
+                } else {
+                    console.log('You can not proceed until you have entered your employee ID number.');
+                    return false;
+                }
+            }
+        },
+        {
+            type: 'input',
+            name: 'email',
+            message: 'Please enter your email address.'
+        },
+        {
+            type: 'input',
+            name: 'username',
+            message: 'What is you Github username? (Required)',
+            validate: userNameInput => {
+                if (userNameInput) {
+                    return true;
+                } else {
+                    console.log('You can not proceed until you have entered your Github username.');
+                    return false;
+                }
+            }
+        },
+    ]).then((answer) => {
+        const newEngineer = new Engineer(answer.engineerName, answer.employeeID, answer.email, answer.username)
+        employeesData.push(newEngineer)
+
+        askEmployeeType()
+    })
+}
+
+const internQuestions = () => {
+    inquirer.prompt([
+        {
+            type: 'input',
+            name: 'internName',
+            message: 'What is your name? (Required)',
+            validate: internInput => {
+                if (internInput){
+                    return true;
+                } else {
+                    console.log('Please enter your name.');
+                    return false;
+                }
+            }
+        },
+        {
+            type: 'input',
+            name: 'employeeID',
+            message: 'Please enter your employee ID number. (Required)',
+            validate: employeeIDInput => {
+                if (employeeIDInput) {
+                    return true;
+                } else {
+                    console.log('You can not proceed until you have entered your employee ID number.');
+                    return false;
+                }
+            }
+        },
+        {
+            type: 'input',
+            name: 'email',
+            message: 'Please enter your email address.'
+        },
+        {
+            type: 'input',
+            name: 'schoolInput',
+            message: 'Please enter your school name.',
+            default: true
+        },
+    ]).then((answer) => {
+        const newIntern = new Intern(answer.internName, answer.employeeID, answer.email, answer.schoolInput)
+        employeesData.push(newIntern)
+
+        askEmployeeType()
+    })
+}                 
 
 addManager()

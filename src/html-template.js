@@ -1,4 +1,4 @@
-const generateHTML = teamArray => {
+const generateHTML = manager => {
     return `
     <div class="card text-dark bg-info mb-3" style="max-width: 18rem;">
     <img src="http://tinygraphs.com/labs/isogrids/hexa" class="card-img-top" alt="avatar">
