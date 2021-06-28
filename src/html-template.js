@@ -17,7 +17,7 @@
     `;
 };
 
-const generateHTML = teamArray => {
+const generateHTML = employeesData => {
     return `<!DOCTYPE html>
 <html>
     <head>
@@ -30,7 +30,7 @@ const generateHTML = teamArray => {
         <link rel="stylesheet" href="style.css">
     </head>
     <body>
-        ${teamArray.map((employee) => {
+        ${employeesData.map((employee) => {
             return generateCard(employee)
         })}
         
@@ -40,4 +40,5 @@ const generateHTML = teamArray => {
 `
 }
 module.exports=generateHTML
+
 */
